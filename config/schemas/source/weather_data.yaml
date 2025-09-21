@@ -1,0 +1,251 @@
+table_name: raw_weather_data
+columns:
+  - name: id
+    type: SERIAL
+    nullable: false
+    description: "Auto-incrementing primary key"
+    primary_key: true
+
+  # Request fields
+  - name: request_type
+    type: VARCHAR(50)
+    nullable: true
+    description: "Type of request made to the API"
+  
+  - name: request_query
+    type: VARCHAR(255)
+    nullable: true
+    description: "Query location string used in the request"
+  
+  - name: request_language
+    type: VARCHAR(10)
+    nullable: true
+    description: "Language code for the request"
+
+  - name: request_unit
+    type: VARCHAR(10)
+    nullable: true
+    description: "Unit system used (metric/imperial)"
+
+  # Location fields
+  - name: location_name
+    type: VARCHAR(100)
+    nullable: true
+    description: "Name of the location"
+  
+  - name: location_country
+    type: VARCHAR(100)
+    nullable: true
+    description: "Country name"
+  
+  - name: location_region
+    type: VARCHAR(100)
+    nullable: true
+    description: "Region or state name"
+  
+  - name: location_lat
+    type: DECIMAL(10,6)
+    nullable: true
+    description: "Latitude coordinate"
+  
+  - name: location_lon
+    type: DECIMAL(10,6)
+    nullable: true
+    description: "Longitude coordinate"
+  
+  - name: location_timezone_id
+    type: VARCHAR(50)
+    nullable: true
+    description: "Timezone identifier"
+  
+  - name: location_localtime
+    type: VARCHAR(20)
+    nullable: true
+    description: "Local time string"
+  
+  - name: location_localtime_epoch
+    type: BIGINT
+    nullable: true
+    description: "Local time as epoch timestamp"
+  
+  - name: location_utc_offset
+    type: DECIMAL(3,1)
+    nullable: true
+    description: "UTC offset in hours"
+
+  # Current weather fields
+  - name: current_observation_time
+    type: VARCHAR(20)
+    nullable: true
+    description: "Time of weather observation"
+  
+  - name: current_temperature
+    type: INTEGER
+    nullable: true
+    description: "Current temperature"
+  
+  - name: current_weather_code
+    type: INTEGER
+    nullable: true
+    description: "Weather condition code"
+  
+  - name: current_weather_icons
+    type: TEXT
+    nullable: true
+    description: "URL to weather icon"
+  
+  - name: current_weather_descriptions
+    type: VARCHAR(100)
+    nullable: true
+    description: "Weather condition description"
+  
+  - name: current_wind_speed
+    type: INTEGER
+    nullable: true
+    description: "Wind speed"
+  
+  - name: current_wind_degree
+    type: INTEGER
+    nullable: true
+    description: "Wind direction in degrees"
+  
+  - name: current_wind_dir
+    type: VARCHAR(10)
+    nullable: true
+    description: "Wind direction abbreviation"
+  
+  - name: current_pressure
+    type: INTEGER
+    nullable: true
+    description: "Atmospheric pressure"
+  
+  - name: current_precip
+    type: DECIMAL(5,2)
+    nullable: true
+    description: "Precipitation amount"
+  
+  - name: current_humidity
+    type: INTEGER
+    nullable: true
+    description: "Humidity percentage"
+  
+  - name: current_cloudcover
+    type: INTEGER
+    nullable: true
+    description: "Cloud cover percentage"
+  
+  - name: current_feelslike
+    type: INTEGER
+    nullable: true
+    description: "Feels like temperature"
+  
+  - name: current_uv_index
+    type: INTEGER
+    nullable: true
+    description: "UV index value"
+  
+  - name: current_visibility
+    type: INTEGER
+    nullable: true
+    description: "Visibility distance"
+  
+  - name: current_is_day
+    type: VARCHAR(10)
+    nullable: true
+    description: "Whether it's day or night"
+
+  # Astro fields
+  - name: astro_sunrise
+    type: VARCHAR(20)
+    nullable: true
+    description: "Sunrise time"
+  
+  - name: astro_sunset
+    type: VARCHAR(20)
+    nullable: true
+    description: "Sunset time"
+  
+  - name: astro_moonrise
+    type: VARCHAR(20)
+    nullable: true
+    description: "Moonrise time"
+  
+  - name: astro_moonset
+    type: VARCHAR(20)
+    nullable: true
+    description: "Moonset time"
+  
+  - name: astro_moon_phase
+    type: VARCHAR(50)
+    nullable: true
+    description: "Current moon phase"
+  
+  - name: astro_moon_illumination
+    type: INTEGER
+    nullable: true
+    description: "Moon illumination percentage"
+
+  # Air quality fields
+  - name: air_quality_co
+    type: DECIMAL(10,2)
+    nullable: true
+    description: "Carbon monoxide level"
+  
+  - name: air_quality_no2
+    type: DECIMAL(10,3)
+    nullable: true
+    description: "Nitrogen dioxide level"
+  
+  - name: air_quality_o3
+    type: DECIMAL(10,2)
+    nullable: true
+    description: "Ozone level"
+  
+  - name: air_quality_so2
+    type: DECIMAL(10,2)
+    nullable: true
+    description: "Sulfur dioxide level"
+  
+  - name: air_quality_pm2_5
+    type: DECIMAL(10,1)
+    nullable: true
+    description: "PM2.5 particle level"
+  
+  - name: air_quality_pm10
+    type: DECIMAL(10,3)
+    nullable: true
+    description: "PM10 particle level"
+  
+  - name: air_quality_us_epa_index
+    type: VARCHAR(10)
+    nullable: true
+    description: "US EPA air quality index"
+  
+  - name: air_quality_gb_defra_index
+    type: VARCHAR(10)
+    nullable: true
+    description: "UK DEFRA air quality index"
+
+  # Metadata fields
+  - name: inserted_at
+    type: TIMESTAMP
+    nullable: false
+    description: "Timestamp when record was inserted"
+  
+  - name: data_source
+    type: VARCHAR(50)
+    nullable: true
+    description: "Source of the data (API name)"
+
+indexes:
+  - name: idx_weather_data_location
+    columns: [location_name, location_country]
+    type: btree
+  
+  - name: idx_weather_data_time
+    columns: [inserted_at]
+    type: timestamp
+  
+  - name: idx_weather_data_temp
+    columns: [current_temperature]
+    type: btree

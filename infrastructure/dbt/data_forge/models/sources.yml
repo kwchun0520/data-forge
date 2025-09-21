@@ -1,0 +1,262 @@
+version: 2
+
+sources:
+  - name: source
+    description: "Raw data tables populated by Airflow"
+    schema: source
+    tables:
+      - name: weather_data
+        description: "Raw weather data from API with flattened structure"
+        columns:
+          # Primary key
+          - name: id
+            description: "Auto-incrementing primary key"
+            tests:
+              - unique
+              - not_null
+          
+          # Request fields
+          - name: request_type
+            description: "Type of request made to the API"
+          
+          - name: request_query
+            description: "Query location string used in the request"
+          
+          - name: request_language
+            description: "Language code for the request"
+          
+          - name: request_unit
+            description: "Unit system used (metric/imperial)"
+          
+          # Location fields
+          - name: location_name
+            description: "Name of the location"
+            tests:
+              - not_null
+          
+          - name: location_country
+            description: "Country name"
+            tests:
+              - not_null
+          
+          - name: location_region
+            description: "Region or state name"
+          
+          - name: location_lat
+            description: "Latitude coordinate"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: -90
+                    max_value: 90
+          
+          - name: location_lon
+            description: "Longitude coordinate"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: -180
+                    max_value: 180
+          
+          - name: location_timezone_id
+            description: "Timezone identifier"
+          
+          - name: location_localtime
+            description: "Local time string"
+          
+          - name: location_localtime_epoch
+            description: "Local time as epoch timestamp"
+          
+          - name: location_utc_offset
+            description: "UTC offset in hours"
+          
+          # Current weather fields
+          - name: current_observation_time
+            description: "Time of weather observation"
+          
+          - name: current_temperature
+            description: "Current temperature"
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: -100
+                    max_value: 100
+          
+          - name: current_weather_code
+            description: "Weather condition code"
+          
+          - name: current_weather_icons
+            description: "URL to weather icon"
+          
+          - name: current_weather_descriptions
+            description: "Weather condition description"
+            tests:
+              - not_null
+          
+          - name: current_wind_speed
+            description: "Wind speed"
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 500
+          
+          - name: current_wind_degree
+            description: "Wind direction in degrees"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 360
+          
+          - name: current_wind_dir
+            description: "Wind direction abbreviation"
+          
+          - name: current_pressure
+            description: "Atmospheric pressure"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 800
+                    max_value: 1200
+          
+          - name: current_precip
+            description: "Precipitation amount"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 1000
+          
+          - name: current_humidity
+            description: "Humidity percentage"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 100
+          
+          - name: current_cloudcover
+            description: "Cloud cover percentage"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 100
+          
+          - name: current_feelslike
+            description: "Feels like temperature"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: -100
+                    max_value: 100
+          
+          - name: current_uv_index
+            description: "UV index value"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 15
+          
+          - name: current_visibility
+            description: "Visibility distance"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 50
+          
+          - name: current_is_day
+            description: "Whether it's day or night"
+          
+          # Astro fields
+          - name: astro_sunrise
+            description: "Sunrise time"
+          
+          - name: astro_sunset
+            description: "Sunset time"
+          
+          - name: astro_moonrise
+            description: "Moonrise time"
+          
+          - name: astro_moonset
+            description: "Moonset time"
+          
+          - name: astro_moon_phase
+            description: "Current moon phase"
+          
+          - name: astro_moon_illumination
+            description: "Moon illumination percentage"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 100
+          
+          # Air quality fields
+          - name: air_quality_co
+            description: "Carbon monoxide level"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 50
+          
+          - name: air_quality_no2
+            description: "Nitrogen dioxide level"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 200
+          
+          - name: air_quality_o3
+            description: "Ozone level"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 400
+          
+          - name: air_quality_so2
+            description: "Sulfur dioxide level"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 1000
+          
+          - name: air_quality_pm2_5
+            description: "PM2.5 particle level"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 500
+          
+          - name: air_quality_pm10
+            description: "PM10 particle level"
+            tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 600
+          
+          - name: air_quality_us_epa_index
+            description: "US EPA air quality index"
+          
+          - name: air_quality_gb_defra_index
+            description: "UK DEFRA air quality index"
+          
+          # Metadata fields
+          - name: inserted_at
+            description: "Timestamp when record was inserted"
+            tests:
+              - not_null
+          
+          - name: data_source
+            description: "Source of the data (API name)"

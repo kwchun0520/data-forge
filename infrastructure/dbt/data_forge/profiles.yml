@@ -1,0 +1,48 @@
+data_forge:
+  outputs:
+    dev:
+      type: postgres
+      threads: 4
+      host: db
+      port: 5432
+      user: "{{ env_var('POSTGRES_USER') }}"
+      pass: "{{ env_var('POSTGRES_PASSWORD') }}"
+      dbname: "{{ env_var('POSTGRES_DB') }}"
+      schema: dev
+      keepalives_idle: 0
+      keepalives_interval: 0
+      keepalives_count: 0
+      search_path: "raw,staging,mart"
+      sslmode: prefer
+
+    uat:
+      type: postgres
+      threads: 4
+      host: db
+      port: 5432
+      user: "{{ env_var('POSTGRES_USER') }}"
+      pass: "{{ env_var('POSTGRES_PASSWORD') }}"
+      dbname: "{{ env_var('POSTGRES_DB') }}"
+      schema: uat
+      keepalives_idle: 0
+      keepalives_interval: 0
+      keepalives_count: 0
+      search_path: "raw,staging,mart"
+      sslmode: prefer
+
+    prod:
+      type: postgres
+      threads: 8
+      host: db
+      port: 5432
+      user: "{{ env_var('POSTGRES_USER') }}"
+      pass: "{{ env_var('POSTGRES_PASSWORD') }}"
+      dbname: "{{ env_var('POSTGRES_DB') }}"
+      schema: prod
+      keepalives_idle: 0
+      keepalives_interval: 0
+      keepalives_count: 0
+      search_path: "raw,staging,mart"
+      sslmode: require
+
+  target: dev
