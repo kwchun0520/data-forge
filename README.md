@@ -121,12 +121,25 @@ Data Forge is a comprehensive data platform that extracts weather data from exte
 
 4. **Start the infrastructure**
    ```bash
-   docker-compose up -d
+   # Start all services (this will show logs in the foreground)
+   docker-compose up
+   
+   # Alternatively, to run in detached mode (background):
+   # docker-compose up -d
+   
+   # To start specific services only:
+   # docker-compose up db airflow
+   # docker-compose up dbt
+   
+   # To rebuild containers if needed:
+   # docker-compose up --build
    ```
 
 5. **Access the services**
    - Airflow UI: http://localhost:8080
    - PostgreSQL: localhost:5432
+   
+   **Note**: Wait for all services to be healthy before proceeding. You'll see log messages indicating when each service is ready.
 
 ### First Run
 
@@ -307,22 +320,3 @@ docker exec dbt_container cat logs/dbt.log
 # PostgreSQL logs
 docker logs postgresdb_container
 ```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
-
-## License
-
-[License details here]
-
-## Support
-
-For questions and support:
-- Create an issue in the repository
-- Check the troubleshooting section
-- Review logs for error details
